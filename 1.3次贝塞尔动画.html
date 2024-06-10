@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三次贝塞尔曲线动画</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600"></canvas>
+<script>
+    // 获取canvas元素和其绘图上下文
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 贝塞尔曲线的控制点
+    const startPoint = {x: 100, y: 500};
+    const controlPoint1 = {x: 200, y: 100};
+    const controlPoint2 = {x: 600, y: 100};
+    const endPoint = {x: 700, y: 500};
+
+    // 当前动画进度
+    let t = 0;
+    // 每帧增加的 t 值
+    const speed = 0.01;
+
+    // 绘制贝塞尔曲线的函数
+    function drawBezierCurve(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.moveTo(startPoint.x, startPoint.y);
+
+        for (let i = 0; i <= t; i += 0.01) {
+            const x = calculateBezierPoint(i, startPoint.x, controlPoint1.x, controlPoint2.x, endPoint.x);
+            const y = calculateBezierPoint(i, startPoint.y, controlPoint1.y, controlPoint2.y, endPoint.y);
+            ctx.lineTo(x, y);
+        }
+
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    /**
+     * 计算贝塞尔在t处点的x坐标/y坐标
+     * @param{number} t 参数，取值范围为[0,1]
+     * @param{number} p0 起点
+     * @param{number} p1 控制点1
+     * @param{number} p2 控制点2
+     * @param{number} p3 终点
+     * B(t)=(1-t)^3 * p0 + 3 * (1-t)^2*p1 + 3*(1-t)^2*p2 + t^3 * p3;
+     * */
+    function calculateBezierPoint(t, p0, p1, p2, p3) {
+        const u = 1 - t;
+        return u ** 3 * p0 + 3 * u ** 2 * t * p1 + 3 * u * t ** 2 * p2 + t ** 3 * p3;
+    }
+
+    // 动画函数
+    function animate() {
+        if (t <= 1) {
+            drawBezierCurve(t);
+            t += speed;
+            requestAnimationFrame(animate);
+        }
+    }
+
+    // 开始动画
+    animate();
+</script>
+</body>
+</html>
