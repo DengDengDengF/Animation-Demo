@@ -31,3 +31,9 @@ dom.style.strokeDashoffset = dom.getTotalLength();
 然后使用 requestAnimationFrame逐帧减少 dom.style.strokeDashoffset 的大小
 ```
 
+### 3.canvas拖拽
+
+```
+略
+```
+

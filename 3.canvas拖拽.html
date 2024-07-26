@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sss</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="200"></canvas>
+</body>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const cell = {x: 10, y: 10, width: 80, height: 80, color: 'lightblue'};
+    const tempCell = {x: 10, y: 10, width: 80, height: 80,};
+    //鼠标与正在拖拽盒子的上距、左距
+    let offsetX, offsetY;
+    let draggedCell = null;
+
+    function drawCell() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = cell.color;
+        ctx.fillRect(cell.x, cell.y, cell.width, cell.height);
+    }
+
+    function drawTempCell() {
+        // drawCell();
+        if (tempCell.x !== cell.x) {
+            drawCell();
+            ctx.strokeRect(tempCell.x, tempCell.y, tempCell.width, tempCell.height);
+        }
+    }
+
+    //确保在按住的是指定的盒子
+    function getCellAt(x, y) {
+        return x >= cell.x && x <= cell.x + cell.width && y >= cell.y && y <= cell.y + cell.height;
+
+    }
+
+    function mouseDown(e) {
+        // debugger
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        draggedCell = getCellAt(x, y);
+        // console.log(draggedCell)
+        if (draggedCell) {
+            offsetX = x - cell.x;
+            offsetY = y - cell.y;
+        }
+    }
+
+    function mouseMove(e) {
+        if (draggedCell) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            tempCell.x = x - offsetX;
+            tempCell.y = y - offsetY;
+            drawTempCell();
+        }
+    }
+
+    function mouseUp(e) {
+        cell.x = tempCell.x;
+        cell.y = tempCell.y;
+        draggedCell = null;
+        drawCell();
+    }
+
+    //按下的时候，记录鼠标与正在拖拽盒子的上距、左距
+    canvas.addEventListener('mousedown', mouseDown);
+    //拖动过程中，时刻同步盒子位置
+    canvas.addEventListener('mousemove', mouseMove);
+    canvas.addEventListener('mouseup', mouseUp)
+    drawCell()
+</script>
+</html>
