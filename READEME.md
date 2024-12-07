@@ -34,6 +34,6 @@ dom.style.strokeDashoffset = dom.getTotalLength();
 ### 3.canvas拖拽
 
 ```
-feature-4
+feature-1
 ```
 
