@@ -14,7 +14,7 @@
  B(t) t点的(x/y)
 */
 B(t)=(1-t)^3 * p0 + 3 * (1-t)^2*p1 + 3*(1-t)^2*p2 + t^3 * p3;
-然后逐帧画出来
+然后逐帧画出来sss
 ```
 
 ### svg路径动画
@@ -34,6 +34,6 @@ dom.style.strokeDashoffset = dom.getTotalLength();
 ### 3.canvas拖拽
 
 ```
-略
+略ffffffffffffffff
 ```
 
